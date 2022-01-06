@@ -36,6 +36,7 @@
 #include "util/RuntimeError.hxx"
 #include "util/Domain.hxx"
 #include "util/ScopeExit.hxx"
+#include "util/StringCompare.hxx"
 #include "thread/Name.hxx"
 #include "tag/ApeReplayGain.hxx"
 #include "Log.hxx"
@@ -414,6 +415,13 @@ decoder_run_file(DecoderBridge &bridge, const char *uri_utf8, Path path_fs)
 
 		throw;
 	}
+	catch (const std::runtime_error &e) {
+		TryContainerDecoder(bridge, path_fs, suffix);
+		return true;
+	}
+
+    if (input_stream == nullptr && !StringIsEqualIgnoreCase(suffix, "dff") && !StringIsEqualIgnoreCase(suffix, "iso"))
+		return false;
 
 	assert(input_stream);
 

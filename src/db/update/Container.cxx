@@ -30,17 +30,30 @@
 #include "storage/FileInfo.hxx"
 #include "Log.hxx"
 
+static bool
+SupportsContainerSuffix(const DecoderPlugin &plugin,
+			std::string_view suffix) noexcept
+{
+	if (plugin.container_scan != nullptr)
+		if (StringIsEqual(plugin.name, "dsdiff") && plugin.SupportsSuffix(suffix))
+			if (plugin.container_scan(Path(nullptr)).empty())
+				return false;
+
+	return plugin.SupportsContainerSuffix(suffix);
+}
+
 bool
 UpdateWalk::UpdateContainerFile(Directory &directory,
 				std::string_view name, std::string_view suffix,
 				const StorageFileInfo &info) noexcept
 {
-	const DecoderPlugin *_plugin = decoder_plugins_find([suffix](const DecoderPlugin &plugin){
-			return plugin.SupportsContainerSuffix(suffix);
-		});
-	if (_plugin == nullptr)
+	std::list<const DecoderPlugin *> plugins;
+	for (unsigned i = 0; decoder_plugins[i] != nullptr; ++i)
+		if (decoder_plugins_enabled[i] && SupportsContainerSuffix(*decoder_plugins[i], suffix))
+			plugins.push_back(decoder_plugins[i]);
+
+	if (plugins.empty())
 		return false;
-	const DecoderPlugin &plugin = *_plugin;
 
 	Directory *contdir;
 	{
@@ -56,38 +69,44 @@ UpdateWalk::UpdateContainerFile(Directory &directory,
 	const auto pathname = storage.MapFS(contdir->GetPath());
 	if (pathname.IsNull()) {
 		/* not a local file: skip, because the container API
-		   supports only local files */
+			 supports only local files */
 		editor.LockDeleteDirectory(contdir);
 		return false;
 	}
 
-	try {
-		auto v = plugin.container_scan(pathname);
-		if (v.empty()) {
-			editor.LockDeleteDirectory(contdir);
-			return false;
-		}
-
-		for (auto &vtrack : v) {
-			auto song = std::make_unique<Song>(std::move(vtrack),
-							   *contdir);
-
-			// shouldn't be necessary but it's there..
-			song->mtime = info.mtime;
-
-			FmtNotice(update_domain, "added {}/{}",
-				  contdir->GetPath(),
-				  song->filename);
-
-			{
-				const ScopeDatabaseLock protect;
-				contdir->AddSong(std::move(song));
+	unsigned int track_count = 0;
+	for (auto plugin : plugins) {
+		try {
+			auto v = plugin->container_scan(pathname);
+			if (v.empty()) {
+				continue;
 			}
 
-			modified = true;
+			for (auto &vtrack : v) {
+				auto song = std::make_unique<Song>(std::move(vtrack),
+				*contdir);
+
+				// shouldn't be necessary but it's there..
+				song->mtime = info.mtime;
+
+				FmtNotice(update_domain, "added {}/{}",
+						contdir->GetPath(),
+						song->filename);
+
+				{
+					const ScopeDatabaseLock protect;
+					contdir->AddSong(std::move(song));
+					track_count++;
+				}
+
+				modified = true;
+			}
+		}	catch (...) {
+			LogError(std::current_exception());
 		}
-	} catch (...) {
-		LogError(std::current_exception());
+	}
+
+	if (track_count == 0) {
 		editor.LockDeleteDirectory(contdir);
 		return false;
 	}

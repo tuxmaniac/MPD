@@ -5,9 +5,27 @@ decoder_plugins_sources = [
 if get_option('dsd')
   decoder_plugins_sources += [
     'HybridDsdDecoderPlugin.cxx',
-    'DsdiffDecoderPlugin.cxx',
     'DsfDecoderPlugin.cxx',
     'DsdLib.cxx',
+  ]
+endif
+
+if get_option('dsd') and not get_option('sacdiso')
+  decoder_plugins_sources += [
+		'DsdiffDecoderPlugin.cxx',
+  ]
+endif
+
+if get_option('sacdiso')
+  decoder_plugins_sources += [
+    'DffDecoderPlugin.cxx',
+		'SacdIsoDecoderPlugin.cxx',
+  ]
+endif
+
+if get_option('dvdaiso')
+  decoder_plugins_sources += [
+    'DvdaIsoDecoderPlugin.cxx',
   ]
 endif
 

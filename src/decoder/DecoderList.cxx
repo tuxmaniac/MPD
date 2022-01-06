@@ -27,8 +27,17 @@
 #include "config/Block.hxx"
 #include "plugins/AudiofileDecoderPlugin.hxx"
 #include "plugins/PcmDecoderPlugin.hxx"
+#ifdef ENABLE_DSD
+#ifndef	ENABLE_SACDISO
 #include "plugins/DsdiffDecoderPlugin.hxx"
+#endif
+#endif
+#ifdef ENABLE_SACDISO
+#include "plugins/DffDecoderPlugin.hxx"
+#endif
 #include "plugins/DsfDecoderPlugin.hxx"
+#include "plugins/SacdIsoDecoderPlugin.hxx"
+#include "plugins/DvdaIsoDecoderPlugin.hxx"
 #include "plugins/HybridDsdDecoderPlugin.hxx"
 #include "plugins/FlacDecoderPlugin.h"
 #include "plugins/OpusDecoderPlugin.h"
@@ -80,7 +89,6 @@ constexpr const struct DecoderPlugin *decoder_plugins[] = {
 	&audiofile_decoder_plugin,
 #endif
 #ifdef ENABLE_DSD
-	&dsdiff_decoder_plugin,
 	&dsf_decoder_plugin,
 	&hybrid_dsd_decoder_plugin,
 #endif
@@ -119,6 +127,18 @@ constexpr const struct DecoderPlugin *decoder_plugins[] = {
 #endif
 #ifdef ENABLE_GME
 	&gme_decoder_plugin,
+#endif
+#ifdef ENABLE_DSD
+#ifndef	ENABLE_SACDISO
+	&dsdiff_decoder_plugin,
+#endif
+#endif
+#ifdef ENABLE_SACDISO
+	&dff_decoder_plugin,
+	&sacdiso_decoder_plugin,
+#endif
+#ifdef ENABLE_DVDAISO
+	&dvdaiso_decoder_plugin,
 #endif
 	&pcm_decoder_plugin,
 	nullptr

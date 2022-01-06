@@ -56,6 +56,8 @@ option('local_socket', type: 'boolean', value: true, description: 'Support for c
 #
 
 option('dsd', type: 'boolean', value: true, description: 'Support the DSD audio format')
+option('sacdiso', type: 'boolean', value: true, description: 'Support Super Audio CD ISO via libsacdiso')
+option('dvdaiso', type: 'boolean', value: true, description: 'Support DVD-Audio ISO via libdvdaiso')
 
 #
 # Database plugins
