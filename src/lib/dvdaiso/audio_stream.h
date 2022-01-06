@@ -24,9 +24,9 @@
 #include "audio_stream_info.h"
 
 extern "C" {
-#include "avcodec.h"
-#include "mlp_parser.h"
-#include "MlpDecoder.h"
+#include "libmlpdec/avcodec.h"
+#include "libmlpdec/mlp_parser.h"
+#include "libmlpdec/MlpDecoder.h"
 }
 
 class audio_stream_t : public audio_stream_info_t {

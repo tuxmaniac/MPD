@@ -18,10 +18,10 @@
  */
 
 #include "config.h"
-#include <sacd_media.h>
-#include <sacd_reader.h>
-#include <sacd_dsdiff.h>
-#include <dst_decoder_mt.h>
+#include "lib/sacdiso/sacd_media.h"
+#include "lib/sacdiso/sacd_reader.h"
+#include "lib/sacdiso/sacd_dsdiff.h"
+#include "lib/sacdiso/libdstdec/binding/dst_decoder_mt.h"
 #undef MAX_CHANNELS
 #include "DffDecoderPlugin.hxx"
 #include "../DecoderAPI.hxx"

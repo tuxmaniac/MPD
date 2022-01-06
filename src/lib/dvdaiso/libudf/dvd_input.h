@@ -20,7 +20,7 @@
 #ifndef _DVD_INPUT_H_INCLUDED
 #define _DVD_INPUT_H_INCLUDED
 
-#include "dvda_media.h"
+#include "../dvda_media.h"
 
 typedef dvda_media_t* dvd_input_t;
 

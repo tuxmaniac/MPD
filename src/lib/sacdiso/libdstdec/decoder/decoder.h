@@ -9,12 +9,12 @@
 #include <stdint.h>
 #include <array>
 #include <vector>
-#include "segment.h"
-#include "ct.h"
-#include "fh.h"
-#include "ac.h"
-#include "fr.h"
-#include "stream.h"
+#include "../segment.h"
+#include "../ct.h"
+#include "../fh.h"
+#include "../ac.h"
+#include "../fr.h"
+#include "../stream.h"
 
 using std::array;
 using std::vector;

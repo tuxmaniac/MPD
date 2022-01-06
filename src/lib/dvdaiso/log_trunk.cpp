@@ -22,7 +22,7 @@
 #include "log_trunk.h"
 
 extern "C" {
-	#include "mlp_util.h"
+	#include "libmlpdec/mlp_util.h"
 }
 
 static constexpr Domain mpd_domain("dvdaiso");

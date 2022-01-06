@@ -236,5 +236,7 @@ decoder_plugins_dep = declare_dependency(
     crypto_base64_dep,
     decoder_api_dep,
     pcm_dep,
+    sacdiso_dep,
+    dvdaiso_dep,
   ],
 )

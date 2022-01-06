@@ -11,6 +11,7 @@ sacdiso = static_library(
   include_directories: inc,
   dependencies: [
     gcrypt_dep,
+    upnp_dep,
   ],
 )
 

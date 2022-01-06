@@ -232,11 +232,8 @@ conf.set('ENABLE_INOTIFY', enable_inotify)
 
 conf.set('ENABLE_DSD', get_option('dsd'))
 
-enable_sacdiso = get_option('sacdiso')
-conf.set('ENABLE_SACDISO', enable_sacdiso)
-
-enable_dvdaiso = get_option('dvdaiso')
-conf.set('ENABLE_DVDAISO', enable_dvdaiso)
+conf.set('ENABLE_SACDISO', get_option('sacdiso'))
+conf.set('ENABLE_DVDAISO', get_option('dvdaiso'))
 
 inc = include_directories(
   'src',
@@ -244,21 +241,6 @@ inc = include_directories(
   # for the generated config.h
   '.',
 )
-
-if enable_sacdiso or enable_dvdaiso
-  inc = include_directories(
-    'src',
-	'.',
-	'src/lib/sacdiso',
-	'src/lib/sacdiso/libdstdec',
-	'src/lib/sacdiso/libdstdec/binding',
-	'src/lib/sacdiso/libdstdec/decoder',
-	'src/lib/dvdaiso',
-	'src/lib/dvdaiso/libmlpdec',
-	'src/lib/dvdaiso/libmlpdec/libavutil',
-	'src/lib/dvdaiso/libudf',
-  )
-endif
 
 boost_dep = dependency('boost', version: '>= 1.58')
 if boost_dep.version() == '1.67'
@@ -444,6 +426,9 @@ subdir('src/lib/yajl')
 
 subdir('src/lib/crypto')
 
+subdir('src/lib/sacdiso')
+subdir('src/lib/dvdaiso')
+
 subdir('src/zeroconf')
 
 subdir('src/fs')
@@ -461,14 +446,6 @@ subdir('src/decoder')
 subdir('src/encoder')
 subdir('src/song')
 subdir('src/playlist')
-
-if enable_sacdiso
-  subdir('src/lib/sacdiso')
-endif
-
-if enable_dvdaiso
-  subdir('src/lib/dvdaiso')
-endif
 
 if curl_dep.found()
   sources += 'src/RemoteTagCache.cxx'
@@ -551,18 +528,6 @@ elif is_haiku
 else
   target_type = 'executable'
   target_name = 'mpd'
-endif
-
-if enable_sacdiso
-  more_deps += [
-    sacdiso_dep,
-  ]
-endif
-
-if enable_dvdaiso
-  more_deps += [
-    dvdaiso_dep,
-  ]
 endif
 
 mpd = build_target(

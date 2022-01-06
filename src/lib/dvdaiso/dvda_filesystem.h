@@ -23,8 +23,8 @@
 #include <cstdint>
 #include <string>
 #include "dvda_media.h"
-#include "dvd_input.h"
-#include "dvd_udf.h"
+#include "libudf/dvd_input.h"
+#include "libudf/dvd_udf.h"
 
 class dvda_filesystem_t;
 class dvda_fileobject_t;

@@ -18,11 +18,11 @@
  */
 
 #include "config.h"
-#include <sacd_media.h>
-#include <sacd_reader.h>
-#include <sacd_disc.h>
-#include <sacd_metabase.h>
-#include <dst_decoder_mt.h>
+#include "lib/sacdiso/sacd_media.h"
+#include "lib/sacdiso/sacd_reader.h"
+#include "lib/sacdiso/sacd_disc.h"
+#include "lib/sacdiso/sacd_metabase.h"
+#include "lib/sacdiso/libdstdec/binding/dst_decoder_mt.h"
 #undef MAX_CHANNELS
 #include "SacdIsoDecoderPlugin.hxx"
 #include "../DecoderAPI.hxx"

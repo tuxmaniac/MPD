@@ -18,12 +18,12 @@
  */
 
 #include "config.h"
-#include <audio_stream.h>
-#include <audio_track.h>
-#include <stream_buffer.h>
-#include <log_trunk.h>
-#include <dvda_disc.h>
-#include <dvda_metabase.h>
+#include "lib/dvdaiso/audio_stream.h"
+#include "lib/dvdaiso/audio_track.h"
+#include "lib/dvdaiso/stream_buffer.h"
+#include "lib/dvdaiso/log_trunk.h"
+#include "lib/dvdaiso/dvda_disc.h"
+#include "lib/dvdaiso/dvda_metabase.h"
 #include "DvdaIsoDecoderPlugin.hxx"
 #include "../DecoderAPI.hxx"
 #include "input/InputStream.hxx"

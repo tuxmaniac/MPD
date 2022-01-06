@@ -22,8 +22,8 @@
 
 #include <thread>
 #include <vector>
-#include <semaphore.h>
-#include "decoder.h"
+#include "semaphore.h"
+#include "../decoder/decoder.h"
 
 using std::thread;
 using std::vector;
